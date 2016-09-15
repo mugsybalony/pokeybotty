@@ -199,21 +199,24 @@ def sim(c1,c2):
 
 
 
-suit1 = create_suit_deck('H')
-suit2 = create_suit_deck('C')
 
-listing = []
+def create_rankings():
 
-for i in range(0,13):
-    for j in range(0,13):
-        wins = 0
-        sim(suit1[i],suit2[j])
-        x= (float(wins)/1500 , str(suit1[i]+' '+  suit2[j]))
-        print x
-        listing.append(x)
+    suit1 = create_suit_deck('H')
+    suit2 = create_suit_deck('C')
 
-df = pd.DataFrame(listing, columns = ('win%','Hand'))
-df.to_csv('rankings.csv')
+    listing = []
+
+    for i in range(0,13):
+        for j in range(0,13):
+            wins = 0
+            sim(suit1[i],suit2[j])
+            x= (float(wins)/1500 , str(suit1[i]+' '+  suit2[j]))
+            print x
+            listing.append(x)
+
+    df = pd.DataFrame(listing, columns = ('win%','Hand'))
+    df.to_csv('rankings.csv')
 
 
 
