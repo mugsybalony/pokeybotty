@@ -120,6 +120,26 @@ def create_card_deck():
     [Deck.append(x + y) for x in values for y in suites]
     return Deck
 
+def create_abridged_dec(percentile):
+    df = pd.DataFrame.from_csv('rankings2.csv',index_col=0)
+    perc = df[df['win%']>np.percentile(df['win%'],percentile)]
+
+    import itertools
+    abridged_deck = []
+    original_suits = 'CDHS'
+
+    for i in perc.Status:
+        if 'pair' in i:
+            [abridged_deck.append((i[0] + j[0], i[0] + j[1])) for j in itertools.combinations(original_suits, 2)]
+        if 'suited' in i:
+            [abridged_deck.append((i[0] + j[0], i[2] + j[0])) for j in original_suits]
+        if 'Offsuite' in i:
+            [abridged_deck.append((i[0] + j[0], i[2] + j[1])) for j in itertools.combinations(original_suits, 2)]
+            [abridged_deck.append((i[0] + j[1], i[2] + j[0])) for j in itertools.combinations(original_suits, 2)]
+
+    print abridged_deck
+    return abridged_deck
+
 def create_suit_deck(suit):
     # type: () -> object
     values = "23456789TJQKA"
@@ -194,7 +214,7 @@ def sim(c1,c2):
     board = []
 
 
-    for i in range(0,1500):
+    for i in range(0,5000):
         run_sim(player1_hand, 1, board)
 
 
@@ -208,15 +228,37 @@ def create_rankings():
     listing = []
 
     for i in range(0,13):
-        for j in range(0,13):
+        #pairs
+        global wins
+        wins = 0
+        sim(suit1[i], suit2[i])
+        x = (float(wins) / 5000, str(suit1[i] + ' ' + suit2[i]), 'pair')
+        print x
+        listing.append(x)
+        #offsuit all it
+        for j in range(i+1,13):
+            global wins
             wins = 0
             sim(suit1[i],suit2[j])
-            x= (float(wins)/1500 , str(suit1[i]+' '+  suit2[j]))
+            x= (float(wins)/5000 , str(suit1[i]+' '+  suit2[j]),'Offsuite')
             print x
             listing.append(x)
+        #suited
+        for k in range(0,i):
+                wins = 0
+                sim(suit1[i], suit1[k])
+                x = (float(wins) / 5000, str(suit1[i] + ' ' + suit1[k]), 'suited')
+                print x
+                listing.append(x)
 
-    df = pd.DataFrame(listing, columns = ('win%','Hand'))
+    df = pd.DataFrame(listing, columns = ('win%','Hand','Suit'))
     df.to_csv('rankings.csv')
+
+
+ab = create_abridged_dec(90)
+#print create_card_deck()
+
+
 
 
 
