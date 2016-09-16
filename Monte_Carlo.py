@@ -136,8 +136,6 @@ def create_abridged_dec(percentile):
         if 'Offsuite' in i:
             [abridged_deck.append((i[0] + j[0], i[2] + j[1])) for j in itertools.combinations(original_suits, 2)]
             [abridged_deck.append((i[0] + j[1], i[2] + j[0])) for j in itertools.combinations(original_suits, 2)]
-
-    print abridged_deck
     return abridged_deck
 
 def create_suit_deck(suit):
@@ -149,7 +147,7 @@ def create_suit_deck(suit):
     return Deck
 
 
-def run_sim(P1,NumPlayers,B1):
+def run_sim(P1,NumPlayers,B1,percentile = 0):
 
     Player_cards = P1[:]
     Board = B1[:]
@@ -168,13 +166,36 @@ def run_sim(P1,NumPlayers,B1):
 
     #assign cards to players
     players = []
-    for j in range(NumPlayers):
-        #select two cards from the deck without duplicate cards
-        cardNums = np.random.choice(len(deck),2,replace=False)
-        hand = [deck[cardNums[0]],deck[cardNums[1]]]
-        players.append(hand)
-        deck.pop(deck.index(hand[0]))
-        deck.pop(deck.index(hand[1]))
+    if percentile==0:
+        for j in range(NumPlayers):
+            #select two cards from the deck without duplicate cards
+            cardNums = np.random.choice(len(deck),2,replace=False)
+            hand = [deck[cardNums[0]],deck[cardNums[1]]]
+            players.append(hand)
+            deck.pop(deck.index(hand[0]))
+            deck.pop(deck.index(hand[1]))
+    else:
+        #create abridged deck with only hands that are in the top xth percentile
+        ab_deck = create_abridged_dec(percentile)
+        #remove combinations that are not possible because the cards are not in the deck
+        for x in ab_deck:
+            if (x[0] not in deck) or (x[1] not in deck):
+                ab_deck.remove(x)
+        for j in range(NumPlayers):
+            cardNums = np.random.randint(len(ab_deck))
+            #print cardNums, ab_deck[cardNums]
+            players.append(list(ab_deck[cardNums]))
+            ab_deck.remove(ab_deck[cardNums])
+    #print players
+            #need to remove the cards from the deck and from the abridged deck
+            #deck.pop(deck.index(ab_deck[cardNums][0]))
+            #deck.pop(deck.index(ab_deck[cardNums][1]))
+            #print ab_deck
+
+
+
+
+
 
 
 
@@ -209,18 +230,22 @@ def run_sim(P1,NumPlayers,B1):
         wins +=1
 
 
-def sim(c1,c2):
+def sim(c1,c2,percentile=0):
     player1_hand = [c1,c2]
     board = []
 
 
-    for i in range(0,5000):
-        run_sim(player1_hand, 1, board)
+    for i in range(0,1500):
+        run_sim(player1_hand, 1, board,percentile)
 
 
 
 
 def create_rankings():
+    """
+    this runs the simulator through every combination of hand and returns the hand rankings in a cvs file. This will not be used during the simulation it was just to creat the hand rankings
+    :return:
+    """
 
     suit1 = create_suit_deck('H')
     suit2 = create_suit_deck('C')
@@ -255,8 +280,36 @@ def create_rankings():
     df.to_csv('rankings.csv')
 
 
-ab = create_abridged_dec(90)
+#ab = create_abridged_dec(90)
 #print create_card_deck()
+global wins
+wins = 0
+#run_sim(['AH', 'TH'],1,[],90)
+sim('AH','AS',90)
+print float(wins)/1500
+
+"""
+x= create_abridged_dec(99)
+#print x
+print x
+pops = [(x.index(x[i])) for i in range(len(x)) if (('KD' in x[i]) or ('KH' in x[i]))]
+pops = sorted(pops, reverse=True)
+print pops
+#x.pop(pops[0])
+#x.pop(pops[1])
+for i in pops:
+    print x[i]
+    x.pop(i)
+print x
+#[x.pop(pops[j]) for j in pops]
+
+"""
+
+#print x
+
+#print ['KS','KD'] in create_abridge_dec(99)
+
+
 
 
 
