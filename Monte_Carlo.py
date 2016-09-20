@@ -3,6 +3,8 @@ import csv
 import pandas as pd
 
 
+
+
 def calc_score(hand):  # assign a calc_score to the hand so it can be compared with other hands
     card_ranks_original = '23456789TJQKA'
     original_suits = 'CDHS'
