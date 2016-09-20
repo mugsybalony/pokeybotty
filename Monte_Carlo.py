@@ -1,6 +1,7 @@
 import numpy as np
 import csv
 import pandas as pd
+import time
 
 
 
@@ -284,11 +285,15 @@ def create_rankings():
 
 #ab = create_abridged_dec(90)
 #print create_card_deck()
+
+t0 = time.time()
 global wins
 wins = 0
 #run_sim(['AH', 'TH'],1,[],90)
-sim('AH','AS',90)
-print float(wins)/1500
+sim('AH','AS',80)
+t1 = time.time()
+dif = round((t1-t0),2)
+print float(wins)/1500, ' calculated in %s seconds'%dif
 
 """
 x= create_abridged_dec(99)
