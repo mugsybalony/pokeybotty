@@ -241,9 +241,6 @@ def sim(c1,c2,percentile=0):
     for i in range(0,1500):
         run_sim(player1_hand, 1, board,percentile)
 
-
-
-
 def create_rankings():
     """
     this runs the simulator through every combination of hand and returns the hand rankings in a cvs file. This will not be used during the simulation it was just to creat the hand rankings
@@ -290,7 +287,7 @@ t0 = time.time()
 global wins
 wins = 0
 #run_sim(['AH', 'TH'],1,[],90)
-sim('AH','AS',80)
+sim('AH','AS')
 t1 = time.time()
 dif = round((t1-t0),2)
 print float(wins)/1500, ' calculated in %s seconds'%dif

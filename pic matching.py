@@ -50,7 +50,7 @@ def cards_on_screen(screenshotpath):
     return  [cards[a] for a in range(len(cards)) if cards[a][1] != None]
 
 
-screen = "ps/screenshot w7.png"
+screen = "ps/screenshot3.png"
 cs = cards_on_screen(screen)
 
 print(cs)
