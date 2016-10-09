@@ -5,6 +5,8 @@ import cv2
 from PIL import Image
 import numpy as np
 from picMatching import find_hidden_on_screen
+from picMatching import cards_on_screen
+import pyautogui
 
 
 def find_stuff():
@@ -14,6 +16,11 @@ def find_stuff():
     screen = 'screen.png'
     cardpath = 'ps/backofcards2.png'
 
+    img = pyautogui.screenshot(region=(260, 219, 275, 75))
+    img.save('smallscreen.png')
+    cards = []
+    cards = cards_on_screen('smallscreen.png')
+
     screenshot1 = Image.open(screen)
     screenshot = cv2.cvtColor(np.array(screenshot1), cv2.COLOR_BGR2RGB)
 
@@ -22,19 +29,19 @@ def find_stuff():
 
     no_players = find_hidden_on_screen(coveredcard, screenshot)
 
-    return no_players, hand
+    return no_players, cards
 
 
-def update_gui(no_players, prob):
-    #screen.fill(background_colour) #use this if you need to wipe the whole background
-    font = pygame.font.Font(None,36)
+def update_gui(no_players, cards, prob):
+    screen.fill(background_colour) #use this if you need to wipe the whole background
+    font = pygame.font.Font(None,20)
 
 
     text1 = font.render("Number of players %s" %no_players, 1, (0,0,0),(255,255,255))
     textpos = text1.get_rect()
     screen.blit(text1,textpos)
 
-    text2 = font.render("My cards %s" % x, 1, (50, 50, 50),(255,255,255))
+    text2 = font.render("My cards %s" % cards, 1, (50, 50, 50),(255,255,255))
     textpos = text2.get_rect()
     screen.blit(text2, (0,font.get_height()))
 
@@ -53,7 +60,7 @@ def init_window():
     global screen, background_colour
 
     pygame.init()
-    (width, height) = (350, 200)
+    (width, height) = (900, 200)
     background_colour = (200, 200, 255)
 
     screen = pygame.display.set_mode((width, height))
@@ -80,9 +87,11 @@ while running:
 
     #time.sleep(0.3)
     x+=1
-    no_players, hand = find_stuff()
+    print 'banana'
+    no_players, cards = find_stuff()
+    print 'pumpkin'
     prob = calc_odds()
-    update_gui(no_players,prob)
+    update_gui(no_players,cards,prob)
 
     print 'looped'
 

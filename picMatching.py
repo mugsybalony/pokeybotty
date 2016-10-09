@@ -1,10 +1,9 @@
 import cv2
 import numpy as np
-from PIL import Image, ImageGrab, ImageDraw, ImageFilter
+from PIL import Image
 import time
-import pyautogui
 import os
-import pyscreenshot as ImageGrab
+#import pyscreenshot as ImageGrab
 
 def find_templates_on_screen(template,screenshot):
     res = cv2.matchTemplate(screenshot, template, cv2.TM_SQDIFF_NORMED)
@@ -90,12 +89,21 @@ def find_dealer(screenpath):
 
 
 
-"""
 
+"""
 os.system("screencapture screen.png")
-#img = ImageGrab.grab(bbox=(0,0,792,590))
+img = ImageGrab.grab()
+img.crop((260,222,543,295))
+img.save('smallscreen.png')
+import testwindow
 screen = "screen.png"
-cs = cards_on_screen(screen)
+#img = cv2.imread("screen.png")
+#print type(img)
+#print img.shape
+#crop_img = img[260:560,222:300,:]
+#cv2.imshow('cropped',img)
+#cv2.imwrite('smallscreen.png',crop_img)
+cs = cards_on_screen('smallscreen.png')
 
 
 print(cs)
