@@ -3,7 +3,8 @@ import numpy as np
 from PIL import Image, ImageGrab, ImageDraw, ImageFilter
 import time
 import pyautogui
-
+import os
+import pyscreenshot as ImageGrab
 
 def find_templates_on_screen(template,screenshot):
     res = cv2.matchTemplate(screenshot, template, cv2.TM_SQDIFF_NORMED)
@@ -91,8 +92,10 @@ def find_dealer(screenpath):
 
 
 
-
-screen = "ps/screenshot1.png"
+os.system("screencapture screen.png")
+#img = ImageGrab.grab(bbox=(0,0,792,590))
+screen = "screen.png"
+print(type(screen))
 cs = cards_on_screen(screen)
 
 
@@ -107,10 +110,13 @@ screenshot = cv2.cvtColor(np.array(screenshot1), cv2.COLOR_BGR2RGB)
 card = Image.open(cardpath)
 coveredcard = cv2.cvtColor(np.array(card), cv2.COLOR_BGR2RGB)
 
+
+t1 = time.time()
 x = find_hidden_on_screen(coveredcard,screenshot)
+t2 = time.time()
+t = t2-t1
+print ("number of player is: %s found in %s second" %(x,t))
 
-print ("number of player is: %s" %x)
+#dealerx, dealery = find_dealer(screen)
 
-dealerx, dealery = find_dealer(screen)
-
-print "dealer found at %s %s" %(dealerx,dealery)
+#print "dealer found at %s %s" %(dealerx,dealery)
