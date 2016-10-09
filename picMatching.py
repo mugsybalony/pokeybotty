@@ -58,7 +58,7 @@ def cards_on_screen(screenshotpath):
 
 def find_hidden_on_screen(template,screenshot):
     res = cv2.matchTemplate(screenshot, template, cv2.TM_SQDIFF_NORMED)
-    loc = np.where(res <= 0.05)
+    loc = np.where(res <= 0.1)
 
     w, h = template.shape[1],template.shape[0]
 
@@ -90,12 +90,11 @@ def find_dealer(screenpath):
 
 
 
-
+"""
 
 os.system("screencapture screen.png")
 #img = ImageGrab.grab(bbox=(0,0,792,590))
 screen = "screen.png"
-print(type(screen))
 cs = cards_on_screen(screen)
 
 
@@ -118,5 +117,6 @@ t = t2-t1
 print ("number of player is: %s found in %s second" %(x,t))
 
 #dealerx, dealery = find_dealer(screen)
-
+"""
 #print "dealer found at %s %s" %(dealerx,dealery)
+
