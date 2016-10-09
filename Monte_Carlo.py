@@ -235,7 +235,7 @@ def run_sim(P1,NumPlayers,B1,percentile = 0):
 
 def sim(c1,c2,percentile=0):
     player1_hand = [c1,c2]
-    board = []
+    board = ['AC','4S','3D']
 
 
     for i in range(0,1500):
@@ -282,7 +282,7 @@ def create_rankings():
 
 #ab = create_abridged_dec(90)
 #print create_card_deck()
-
+"""
 t0 = time.time()
 global wins
 wins = 0
@@ -291,7 +291,7 @@ sim('AH','AS')
 t1 = time.time()
 dif = round((t1-t0),2)
 print float(wins)/1500, ' calculated in %s seconds'%dif
-
+"""
 """
 x= create_abridged_dec(99)
 #print x
@@ -312,10 +312,6 @@ print x
 #print x
 
 #print ['KS','KD'] in create_abridge_dec(99)
-
-
-
-
 
 
 
