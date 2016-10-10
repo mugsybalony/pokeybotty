@@ -227,10 +227,12 @@ def run_sim(P1,NumPlayers,B1,percentile = 0):
 
     #print scores
     #print 'hands: ', handlist
-    global wins
     winornot,winninghand,winningscore =eval_best_hand(handlist)
+
     if winornot == 0:
-        wins +=1
+        return 1
+    else:
+        return 0
 
 
 def sim(c1,c2,percentile=0):
@@ -282,7 +284,7 @@ def create_rankings():
 
 #ab = create_abridged_dec(90)
 #print create_card_deck()
-
+"""
 t0 = time.time()
 global wins
 wins = 0
@@ -291,7 +293,7 @@ sim('AH','AS')
 t1 = time.time()
 dif = round((t1-t0),2)
 print float(wins)/1500, ' calculated in %s seconds'%dif
-
+"""
 """
 x= create_abridged_dec(99)
 #print x
